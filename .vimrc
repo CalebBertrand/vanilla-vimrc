@@ -2,6 +2,8 @@ set number
 set relativenumber
 set guicursor=n-v-c-i:block
 
+colorscheme murphy
+
 set encoding=utf-8
 
 set tabstop=4
@@ -44,3 +46,15 @@ function GotoFile()
     silent execute "open " . file
 endfunction
 noremap <leader>ff :call GotoFile()<CR>
+
+function HookFile()
+    let register = input("Hook file into register: ")
+    execute "let @" . register . " = \"" . expand("%") . "\""
+endfunction
+noremap <leader>j :call HookFile()<CR>
+
+function GotoHook()
+    let register = input("Goto hook: ")
+    execute "edit " . getreg(register)
+endfunction
+noremap <leader>h :call GotoHook()<CR>
