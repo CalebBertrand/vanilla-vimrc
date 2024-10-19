@@ -2,7 +2,7 @@ set number
 set relativenumber
 set guicursor=n-v-c-i:block
 
-colorscheme murphy
+set ai
 
 set encoding=utf-8
 
@@ -58,3 +58,20 @@ function GotoHook()
     execute "edit " . getreg(register)
 endfunction
 noremap <leader>h :call GotoHook()<CR>
+
+function OpenFileUnderCursor()
+    let path = expand('<cfile>')
+    let isTsFile = matchend(expand('%'), '.ts') >= 0
+    if !empty(path)
+        let projectRoot = substitute(trim(system('npm root')), '\/node_modules', '', 'g')
+        let expandedPath = substitute(path, '[~]', projectRoot, 'g')
+        if isTsFile
+            let expandedPath = expandedPath . '.ts'
+        endif
+
+        execute 'edit ' . expandedPath
+    endif
+endfunction
+noremap gf :call OpenFileUnderCursor()<CR>
+
+colorscheme peachpuff
